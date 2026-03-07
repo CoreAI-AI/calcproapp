@@ -1,0 +1,72 @@
+export interface Currency {
+  code: string;
+  name: string;
+  symbol: string;
+  flag: string;
+}
+
+export const currencies: Currency[] = [
+  { code: "USD", name: "US Dollar", symbol: "$", flag: "🇺🇸" },
+  { code: "INR", name: "Indian Rupee", symbol: "₹", flag: "🇮🇳" },
+  { code: "EUR", name: "Euro", symbol: "€", flag: "🇪🇺" },
+  { code: "GBP", name: "British Pound", symbol: "£", flag: "🇬🇧" },
+  { code: "JPY", name: "Japanese Yen", symbol: "¥", flag: "🇯🇵" },
+  { code: "AED", name: "UAE Dirham", symbol: "د.إ", flag: "🇦🇪" },
+  { code: "AUD", name: "Australian Dollar", symbol: "A$", flag: "🇦🇺" },
+  { code: "CAD", name: "Canadian Dollar", symbol: "C$", flag: "🇨🇦" },
+  { code: "CNY", name: "Chinese Yuan", symbol: "¥", flag: "🇨🇳" },
+  { code: "SAR", name: "Saudi Riyal", symbol: "﷼", flag: "🇸🇦" },
+  { code: "CHF", name: "Swiss Franc", symbol: "CHF", flag: "🇨🇭" },
+  { code: "SGD", name: "Singapore Dollar", symbol: "S$", flag: "🇸🇬" },
+  { code: "HKD", name: "Hong Kong Dollar", symbol: "HK$", flag: "🇭🇰" },
+  { code: "KRW", name: "South Korean Won", symbol: "₩", flag: "🇰🇷" },
+  { code: "MXN", name: "Mexican Peso", symbol: "$", flag: "🇲🇽" },
+  { code: "BRL", name: "Brazilian Real", symbol: "R$", flag: "🇧🇷" },
+  { code: "ZAR", name: "South African Rand", symbol: "R", flag: "🇿🇦" },
+  { code: "THB", name: "Thai Baht", symbol: "฿", flag: "🇹🇭" },
+  { code: "MYR", name: "Malaysian Ringgit", symbol: "RM", flag: "🇲🇾" },
+  { code: "IDR", name: "Indonesian Rupiah", symbol: "Rp", flag: "🇮🇩" },
+  { code: "PHP", name: "Philippine Peso", symbol: "₱", flag: "🇵🇭" },
+  { code: "TWD", name: "New Taiwan Dollar", symbol: "NT$", flag: "🇹🇼" },
+  { code: "PKR", name: "Pakistani Rupee", symbol: "₨", flag: "🇵🇰" },
+  { code: "BDT", name: "Bangladeshi Taka", symbol: "৳", flag: "🇧🇩" },
+  { code: "LKR", name: "Sri Lankan Rupee", symbol: "₨", flag: "🇱🇰" },
+  { code: "NPR", name: "Nepalese Rupee", symbol: "₨", flag: "🇳🇵" },
+  { code: "NGN", name: "Nigerian Naira", symbol: "₦", flag: "🇳🇬" },
+  { code: "EGP", name: "Egyptian Pound", symbol: "E£", flag: "🇪🇬" },
+  { code: "TRY", name: "Turkish Lira", symbol: "₺", flag: "🇹🇷" },
+  { code: "RUB", name: "Russian Ruble", symbol: "₽", flag: "🇷🇺" },
+  { code: "SEK", name: "Swedish Krona", symbol: "kr", flag: "🇸🇪" },
+  { code: "NOK", name: "Norwegian Krone", symbol: "kr", flag: "🇳🇴" },
+  { code: "DKK", name: "Danish Krone", symbol: "kr", flag: "🇩🇰" },
+  { code: "PLN", name: "Polish Złoty", symbol: "zł", flag: "🇵🇱" },
+  { code: "CZK", name: "Czech Koruna", symbol: "Kč", flag: "🇨🇿" },
+  { code: "HUF", name: "Hungarian Forint", symbol: "Ft", flag: "🇭🇺" },
+  { code: "ILS", name: "Israeli Shekel", symbol: "₪", flag: "🇮🇱" },
+  { code: "CLP", name: "Chilean Peso", symbol: "$", flag: "🇨🇱" },
+  { code: "COP", name: "Colombian Peso", symbol: "$", flag: "🇨🇴" },
+  { code: "ARS", name: "Argentine Peso", symbol: "$", flag: "🇦🇷" },
+  { code: "PEN", name: "Peruvian Sol", symbol: "S/", flag: "🇵🇪" },
+  { code: "VND", name: "Vietnamese Dong", symbol: "₫", flag: "🇻🇳" },
+  { code: "KWD", name: "Kuwaiti Dinar", symbol: "د.ك", flag: "🇰🇼" },
+  { code: "QAR", name: "Qatari Riyal", symbol: "﷼", flag: "🇶🇦" },
+  { code: "BHD", name: "Bahraini Dinar", symbol: ".د.ب", flag: "🇧🇭" },
+  { code: "OMR", name: "Omani Rial", symbol: "﷼", flag: "🇴🇲" },
+  { code: "JOD", name: "Jordanian Dinar", symbol: "د.ا", flag: "🇯🇴" },
+  { code: "KES", name: "Kenyan Shilling", symbol: "KSh", flag: "🇰🇪" },
+  { code: "GHS", name: "Ghanaian Cedi", symbol: "₵", flag: "🇬🇭" },
+  { code: "MAD", name: "Moroccan Dirham", symbol: "د.م.", flag: "🇲🇦" },
+];
+
+// Static fallback rates (base: USD)
+export const fallbackRates: Record<string, number> = {
+  USD: 1, INR: 83.5, EUR: 0.92, GBP: 0.79, JPY: 149.5, AED: 3.67,
+  AUD: 1.53, CAD: 1.36, CNY: 7.24, SAR: 3.75, CHF: 0.88, SGD: 1.34,
+  HKD: 7.82, KRW: 1320, MXN: 17.1, BRL: 4.95, ZAR: 18.6, THB: 35.2,
+  MYR: 4.72, IDR: 15600, PHP: 56.2, TWD: 31.5, PKR: 278, BDT: 110,
+  LKR: 325, NPR: 133, NGN: 1550, EGP: 30.9, TRY: 30.5, RUB: 91.5,
+  SEK: 10.5, NOK: 10.6, DKK: 6.86, PLN: 4.02, CZK: 22.5, HUF: 355,
+  ILS: 3.68, CLP: 890, COP: 3950, ARS: 830, PEN: 3.72, VND: 24500,
+  KWD: 0.31, QAR: 3.64, BHD: 0.377, OMR: 0.385, JOD: 0.71, KES: 153,
+  GHS: 12.5, MAD: 10.1,
+};
