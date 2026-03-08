@@ -58,5 +58,9 @@ export function useTheme() {
     setColorState(c);
   }, []);
 
-  return { theme: mode, color, toggle, setColor, setMode };
+  // Alias for backward compatibility
+  const theme = mode;
+  const setTheme = setMode;
+
+  return { theme, color, toggle, setColor, setTheme, setMode };
 }
