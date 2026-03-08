@@ -1,7 +1,8 @@
 import { useState, useMemo } from "react";
-import { ArrowUpDown, Search } from "lucide-react";
+import { ArrowUpDown, Search, RefreshCw, Wifi, WifiOff } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
-import { currencies, fallbackRates } from "@/data/currencies";
+import { currencies } from "@/data/currencies";
+import { useCurrencyRates } from "@/hooks/useCurrencyRates";
 
 export default function CurrencyConverterPage() {
   const [from, setFrom] = useState("INR");
@@ -10,17 +11,19 @@ export default function CurrencyConverterPage() {
   const [showPicker, setShowPicker] = useState<"from" | "to" | null>(null);
   const [search, setSearch] = useState("");
 
+  const { rates, lastUpdated, loading, isLive, refresh } = useCurrencyRates();
+
   const fromC = currencies.find(c => c.code === from)!;
   const toC = currencies.find(c => c.code === to)!;
 
   const converted = useMemo(() => {
     const amt = parseFloat(amount) || 0;
-    return (amt / (fallbackRates[from] || 1) * (fallbackRates[to] || 1)).toFixed(2);
-  }, [amount, from, to]);
+    return (amt / (rates[from] || 1) * (rates[to] || 1)).toFixed(2);
+  }, [amount, from, to, rates]);
 
   const rate = useMemo(() => {
-    return ((fallbackRates[to] || 1) / (fallbackRates[from] || 1)).toFixed(4);
-  }, [from, to]);
+    return ((rates[to] || 1) / (rates[from] || 1)).toFixed(4);
+  }, [from, to, rates]);
 
   const swap = () => { setFrom(to); setTo(from); };
 
@@ -36,11 +39,41 @@ export default function CurrencyConverterPage() {
     setSearch("");
   };
 
+  const timeAgo = () => {
+    if (!lastUpdated) return "";
+    const diff = Math.floor((Date.now() - lastUpdated.getTime()) / 60000);
+    if (diff < 1) return "Just now";
+    if (diff < 60) return `${diff}m ago`;
+    return `${Math.floor(diff / 60)}h ago`;
+  };
+
   return (
     <div className="max-w-lg mx-auto pb-24">
-      <PageHeader title="Currency" subtitle="50+ currencies" />
+      <PageHeader title="Currency" subtitle="50+ currencies • Live rates" />
 
       <div className="px-5 space-y-4">
+        {/* Live Status Bar */}
+        <div className="flex items-center justify-between bg-card rounded-2xl border border-border px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            {isLive ? (
+              <Wifi className="w-3.5 h-3.5 text-success" />
+            ) : (
+              <WifiOff className="w-3.5 h-3.5 text-muted-foreground" />
+            )}
+            <span className="text-xs text-muted-foreground">
+              {isLive ? `Live • ${timeAgo()}` : "Offline rates"}
+            </span>
+          </div>
+          <button
+            onClick={refresh}
+            disabled={loading}
+            className="flex items-center gap-1.5 text-xs text-primary font-medium btn-bounce disabled:opacity-50"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+            Refresh
+          </button>
+        </div>
+
         {/* From */}
         <div className="bg-card rounded-2xl border border-border p-4">
           <button
@@ -81,7 +114,10 @@ export default function CurrencyConverterPage() {
         </div>
 
         {/* Rate */}
-        <p className="text-center text-sm text-muted-foreground">1 {from} = {rate} {to}</p>
+        <p className="text-center text-sm text-muted-foreground">
+          1 {from} = {rate} {to}
+          {isLive && <span className="ml-1 text-success">●</span>}
+        </p>
 
         {/* Currency Picker */}
         {showPicker && (

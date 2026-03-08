@@ -58,18 +58,18 @@ export default function CalculatorPage() {
   return (
     <div className="flex flex-col min-h-screen max-w-lg mx-auto">
       {/* Display Area */}
-      <div className="flex-1 flex flex-col justify-end p-5 min-h-[180px]">
+      <div className="flex-1 flex flex-col justify-end p-5 min-h-[200px]">
         <div className="text-right">
           {calc.expression && (
             <p className="text-sm text-muted-foreground font-mono mb-1 truncate">{calc.expression}</p>
           )}
-          <p className="text-5xl font-bold font-mono text-foreground truncate">{fmt(calc.display)}</p>
+          <p className="text-5xl font-bold font-mono text-foreground truncate leading-tight">{fmt(calc.display)}</p>
           {calc.preview && calc.preview !== calc.display && (
             <p className="text-lg text-muted-foreground font-mono mt-1">= {fmt(calc.preview)}</p>
           )}
         </div>
-        <div className="flex justify-end mt-2">
-          <button onClick={copyResult} className="p-2 rounded-lg bg-secondary btn-bounce">
+        <div className="flex justify-end mt-3">
+          <button onClick={copyResult} className="p-2 rounded-xl bg-secondary btn-bounce">
             <Copy className="w-4 h-4 text-muted-foreground" />
           </button>
         </div>
@@ -78,7 +78,7 @@ export default function CalculatorPage() {
       {/* Scientific Toggle */}
       <button
         onClick={() => setShowSci(!showSci)}
-        className="mx-5 mb-2 flex items-center justify-center gap-1 py-1.5 rounded-lg bg-secondary text-muted-foreground text-xs font-medium btn-bounce"
+        className="mx-5 mb-2 flex items-center justify-center gap-1 py-2 rounded-xl bg-card border border-border text-muted-foreground text-xs font-medium btn-bounce"
       >
         <ChevronUp className={`w-3 h-3 transition-transform ${showSci ? "rotate-180" : ""}`} />
         Scientific
@@ -92,7 +92,7 @@ export default function CalculatorPage() {
               <button
                 key={btn}
                 onClick={() => handleSci(btn)}
-                className="py-2.5 rounded-xl bg-secondary text-secondary-foreground text-sm font-medium btn-bounce"
+                className="py-3 rounded-xl bg-card border border-border text-foreground text-sm font-medium btn-bounce"
               >
                 {btn}
               </button>
@@ -107,9 +107,9 @@ export default function CalculatorPage() {
           <div className="flex-1">
             {/* AC, %, ⌫ */}
             <div className="grid grid-cols-3 gap-2.5 mb-2.5">
-              <button onClick={calc.clear} className="py-4 rounded-2xl bg-secondary text-destructive font-semibold text-lg btn-bounce">AC</button>
-              <button onClick={calc.inputPercent} className="py-4 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-lg btn-bounce">%</button>
-              <button onClick={calc.backspace} className="py-4 rounded-2xl bg-secondary text-secondary-foreground font-semibold text-lg btn-bounce flex items-center justify-center">
+              <button onClick={calc.clear} className="py-4 rounded-2xl bg-card border border-border text-destructive font-semibold text-lg btn-bounce">AC</button>
+              <button onClick={calc.inputPercent} className="py-4 rounded-2xl bg-card border border-border text-secondary-foreground font-semibold text-lg btn-bounce">%</button>
+              <button onClick={calc.backspace} className="py-4 rounded-2xl bg-card border border-border text-secondary-foreground font-semibold text-lg btn-bounce flex items-center justify-center">
                 <Delete className="w-5 h-5" />
               </button>
             </div>
@@ -125,11 +125,11 @@ export default function CalculatorPage() {
           {/* Operators */}
           <div className="flex flex-col gap-2.5 w-16">
             {operators.map((op) => (
-              <button key={op} onClick={() => handleOperator(op)} className="flex-1 rounded-2xl bg-calc-operator text-calc-operator-foreground font-semibold text-xl btn-bounce">
+              <button key={op} onClick={() => handleOperator(op)} className="flex-1 rounded-2xl bg-primary text-primary-foreground font-semibold text-xl btn-bounce shadow-md">
                 {op}
               </button>
             ))}
-            <button onClick={calc.calculate} className="flex-1 rounded-2xl bg-success text-success-foreground font-semibold text-xl btn-bounce">
+            <button onClick={calc.calculate} className="flex-1 rounded-2xl bg-success text-success-foreground font-semibold text-xl btn-bounce shadow-md">
               =
             </button>
           </div>

@@ -1,6 +1,5 @@
 import { Calculator, Wrench, ArrowLeftRight, Ruler, Clock, Settings } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
 
 const tabs = [
   { path: "/", icon: Calculator, label: "Calc" },
@@ -16,7 +15,7 @@ export function BottomNav() {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-nav-bg border-t border-border safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-nav-bg/95 backdrop-blur-lg border-t border-border safe-area-bottom">
       <div className="flex items-center justify-around h-16 max-w-lg mx-auto px-1">
         {tabs.map((tab) => {
           const active = location.pathname === tab.path;
@@ -27,17 +26,13 @@ export function BottomNav() {
               className="relative flex flex-col items-center justify-center gap-0.5 w-14 h-14 btn-bounce"
             >
               {active && (
-                <motion.div
-                  layoutId="nav-indicator"
-                  className="absolute -top-1 w-8 h-1 rounded-full bg-nav-active"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
+                <div className="absolute -top-1 w-8 h-1 rounded-full bg-primary transition-all" />
               )}
               <tab.icon
-                className={`w-5 h-5 transition-colors ${active ? "text-nav-active" : "text-nav-inactive"}`}
+                className={`w-5 h-5 transition-colors ${active ? "text-primary" : "text-nav-inactive"}`}
               />
               <span
-                className={`text-[10px] font-medium transition-colors ${active ? "text-nav-active" : "text-nav-inactive"}`}
+                className={`text-[10px] font-medium transition-colors ${active ? "text-primary" : "text-nav-inactive"}`}
               >
                 {tab.label}
               </span>
