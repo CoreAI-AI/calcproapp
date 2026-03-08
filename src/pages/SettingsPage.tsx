@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Moon, Sun, Volume2, VolumeX, Smartphone, Trash2, Palette } from "lucide-react";
+import { Moon, Sun, Volume2, VolumeX, Smartphone, Trash2, Palette, Check } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme, themeColors, type ThemeColor } from "@/hooks/useTheme";
 import { toast } from "sonner";
 
 export default function SettingsPage() {
-  const { theme, toggle } = useTheme();
+  const { theme, color, toggle, setColor } = useTheme();
   const [sound, setSound] = useState(() => localStorage.getItem("calc-sound") !== "off");
   const [vibration, setVibration] = useState(() => localStorage.getItem("calc-vibration") !== "off");
+  const [showThemes, setShowThemes] = useState(false);
 
   const toggleSound = () => {
     const next = !sound;
@@ -64,9 +65,39 @@ export default function SettingsPage() {
         <SettingItem
           icon={<Palette className="w-5 h-5" />}
           label="App Theme"
-          description="Orange accent"
-          disabled
+          description={`${themeColors[color].label} accent`}
+          onClick={() => setShowThemes(!showThemes)}
         />
+
+        {/* Theme Color Picker */}
+        {showThemes && (
+          <div className="bg-card rounded-2xl border border-border p-4">
+            <p className="text-xs font-medium text-muted-foreground mb-3">Choose Accent Color</p>
+            <div className="grid grid-cols-3 gap-3">
+              {(Object.keys(themeColors) as ThemeColor[]).map((key) => {
+                const t = themeColors[key];
+                const isActive = color === key;
+                return (
+                  <button
+                    key={key}
+                    onClick={() => setColor(key)}
+                    className={`flex items-center gap-2 px-3 py-3 rounded-xl border-2 transition-all btn-bounce ${
+                      isActive ? "border-primary bg-primary/10" : "border-border bg-secondary"
+                    }`}
+                  >
+                    <div
+                      className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0"
+                      style={{ backgroundColor: t.preview }}
+                    >
+                      {isActive && <Check className="w-3.5 h-3.5 text-white" />}
+                    </div>
+                    <span className="text-xs font-medium text-foreground">{t.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="px-5 mt-8 text-center">
@@ -95,7 +126,7 @@ function SettingItem({ icon, label, description, toggle, checked, onToggle, onCl
       </div>
       {toggle && (
         <div className={`w-11 h-6 rounded-full transition-colors ${checked ? "bg-primary" : "bg-secondary"} relative`}>
-          <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-card shadow transition-transform ${checked ? "translate-x-5.5 left-0.5" : "left-0.5"}`}
+          <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-card shadow transition-transform ${checked ? "left-0.5" : "left-0.5"}`}
             style={{ transform: checked ? "translateX(22px)" : "translateX(0)" }}
           />
         </div>

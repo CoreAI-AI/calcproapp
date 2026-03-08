@@ -64,23 +64,23 @@
   }
 
   .dark {
-    --background: 225 25% 8%;
+    --background: 228 20% 6%;
     --foreground: 220 15% 95%;
 
-    --card: 225 22% 12%;
+    --card: 228 18% 10%;
     --card-foreground: 220 15% 95%;
 
-    --popover: 225 22% 12%;
+    --popover: 228 18% 10%;
     --popover-foreground: 220 15% 95%;
 
     --primary: 24 95% 53%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 225 20% 18%;
+    --secondary: 228 16% 14%;
     --secondary-foreground: 220 15% 95%;
 
-    --muted: 225 20% 18%;
-    --muted-foreground: 220 10% 55%;
+    --muted: 228 16% 14%;
+    --muted-foreground: 220 10% 50%;
 
     --accent: 24 95% 53%;
     --accent-foreground: 0 0% 100%;
@@ -88,20 +88,20 @@
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 225 20% 18%;
-    --input: 225 20% 18%;
+    --border: 228 14% 14%;
+    --input: 228 14% 14%;
     --ring: 24 95% 53%;
 
-    --calc-btn: 225 20% 16%;
+    --calc-btn: 228 16% 13%;
     --calc-btn-foreground: 220 15% 90%;
     --calc-operator: 24 95% 53%;
     --calc-operator-foreground: 0 0% 100%;
-    --calc-display: 225 22% 12%;
+    --calc-display: 228 18% 10%;
     --calc-display-foreground: 220 15% 95%;
 
-    --nav-bg: 225 22% 12%;
+    --nav-bg: 228 18% 8%;
     --nav-active: 24 95% 53%;
-    --nav-inactive: 220 10% 50%;
+    --nav-inactive: 220 10% 45%;
 
     --success: 145 65% 42%;
     --success-foreground: 0 0% 100%;
@@ -125,6 +125,8 @@
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-display);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
@@ -140,11 +142,37 @@
   }
 
   .btn-bounce {
-    @apply transition-transform active:scale-95;
+    @apply transition-all duration-150 active:scale-95;
   }
 
   .glass {
     @apply backdrop-blur-xl;
     background: hsl(var(--card) / 0.8);
   }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+/* Remove number input spinners */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
 }
