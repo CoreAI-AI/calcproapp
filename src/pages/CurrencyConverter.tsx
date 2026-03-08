@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ArrowUpDown, Search, RefreshCw, Wifi, WifiOff } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { currencies } from "@/data/currencies";
@@ -13,16 +13,31 @@ export default function CurrencyConverterPage() {
 
   const { rates, lastUpdated, loading, isLive, refresh } = useCurrencyRates();
 
+  // Auto refresh when page becomes visible
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") {
+        refresh();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [refresh]);
+
   const fromC = currencies.find(c => c.code === from)!;
   const toC = currencies.find(c => c.code === to)!;
 
   const converted = useMemo(() => {
     const amt = parseFloat(amount) || 0;
-    return (amt / (rates[from] || 1) * (rates[to] || 1)).toFixed(2);
+    const fromRate = rates[from] || 1;
+    const toRate = rates[to] || 1;
+    return (amt / fromRate * toRate).toFixed(2);
   }, [amount, from, to, rates]);
 
   const rate = useMemo(() => {
-    return ((rates[to] || 1) / (rates[from] || 1)).toFixed(4);
+    const fromRate = rates[from] || 1;
+    const toRate = rates[to] || 1;
+    return (toRate / fromRate).toFixed(4);
   }, [from, to, rates]);
 
   const swap = () => { setFrom(to); setTo(from); };
@@ -41,10 +56,10 @@ export default function CurrencyConverterPage() {
 
   const timeAgo = () => {
     if (!lastUpdated) return "";
-    const diff = Math.floor((Date.now() - lastUpdated.getTime()) / 60000);
-    if (diff < 1) return "Just now";
-    if (diff < 60) return `${diff}m ago`;
-    return `${Math.floor(diff / 60)}h ago`;
+    const diff = Math.floor((Date.now() - lastUpdated.getTime()) / 1000);
+    if (diff < 60) return "Just now";
+    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
+    return `${Math.floor(diff / 3600)}h ago`;
   };
 
   return (
@@ -56,13 +71,19 @@ export default function CurrencyConverterPage() {
         <div className="flex items-center justify-between bg-card rounded-2xl border border-border px-4 py-2.5">
           <div className="flex items-center gap-2">
             {isLive ? (
-              <Wifi className="w-3.5 h-3.5 text-success" />
+              <span className="flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-success animate-pulse" />
+                <span className="text-xs text-success font-medium">Live</span>
+              </span>
             ) : (
-              <WifiOff className="w-3.5 h-3.5 text-muted-foreground" />
+              <span className="flex items-center gap-1.5">
+                <WifiOff className="w-3.5 h-3.5 text-muted-foreground" />
+                <span className="text-xs text-muted-foreground">Offline</span>
+              </span>
             )}
-            <span className="text-xs text-muted-foreground">
-              {isLive ? `Live • ${timeAgo()}` : "Offline rates"}
-            </span>
+            {lastUpdated && (
+              <span className="text-xs text-muted-foreground">• {timeAgo()}</span>
+            )}
           </div>
           <button
             onClick={refresh}
@@ -70,7 +91,7 @@ export default function CurrencyConverterPage() {
             className="flex items-center gap-1.5 text-xs text-primary font-medium btn-bounce disabled:opacity-50"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
-            Refresh
+            {loading ? "Updating..." : "Refresh"}
           </button>
         </div>
 
@@ -116,7 +137,7 @@ export default function CurrencyConverterPage() {
         {/* Rate */}
         <p className="text-center text-sm text-muted-foreground">
           1 {from} = {rate} {to}
-          {isLive && <span className="ml-1 text-success">●</span>}
+          {isLive && <span className="ml-1.5 text-success text-xs">● Live</span>}
         </p>
 
         {/* Currency Picker */}
@@ -127,7 +148,7 @@ export default function CurrencyConverterPage() {
               <input
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search..."
+                placeholder="Search currency..."
                 className="bg-transparent w-full outline-none text-sm text-foreground"
                 autoFocus
               />
