@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Moon, Sun, Volume2, VolumeX, Smartphone, Trash2, Palette, Check } from "lucide-react";
+import { Moon, Sun, Volume2, VolumeX, Smartphone, Trash2, Palette, Check, Download } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { useTheme, themeColors, type ThemeColor } from "@/hooks/useTheme";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function SettingsPage() {
@@ -9,6 +10,7 @@ export default function SettingsPage() {
   const [sound, setSound] = useState(() => localStorage.getItem("calc-sound") !== "off");
   const [vibration, setVibration] = useState(() => localStorage.getItem("calc-vibration") !== "off");
   const [showThemes, setShowThemes] = useState(false);
+  const navigate = useNavigate();
 
   const toggleSound = () => {
     const next = !sound;
@@ -57,12 +59,6 @@ export default function SettingsPage() {
           onToggle={toggleVibration}
         />
         <SettingItem
-          icon={<Trash2 className="w-5 h-5" />}
-          label="Clear History"
-          description="Remove all saved calculations"
-          onClick={clearHistory}
-        />
-        <SettingItem
           icon={<Palette className="w-5 h-5" />}
           label="App Theme"
           description={`${themeColors[color].label} accent`}
@@ -98,6 +94,19 @@ export default function SettingsPage() {
             </div>
           </div>
         )}
+
+        <SettingItem
+          icon={<Download className="w-5 h-5" />}
+          label="Install App"
+          description="Phone pe install karo"
+          onClick={() => navigate("/install")}
+        />
+        <SettingItem
+          icon={<Trash2 className="w-5 h-5" />}
+          label="Clear History"
+          description="Remove all saved calculations"
+          onClick={clearHistory}
+        />
       </div>
 
       <div className="px-5 mt-8 text-center">
@@ -126,7 +135,7 @@ function SettingItem({ icon, label, description, toggle, checked, onToggle, onCl
       </div>
       {toggle && (
         <div className={`w-11 h-6 rounded-full transition-colors ${checked ? "bg-primary" : "bg-secondary"} relative`}>
-          <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-card shadow transition-transform ${checked ? "left-0.5" : "left-0.5"}`}
+          <div className={`absolute top-0.5 w-5 h-5 rounded-full bg-card shadow transition-transform left-0.5`}
             style={{ transform: checked ? "translateX(22px)" : "translateX(0)" }}
           />
         </div>

@@ -10,31 +10,35 @@ import CurrencyConverter from "./pages/CurrencyConverter";
 import UnitConverter from "./pages/UnitConverter";
 import History from "./pages/History";
 import SettingsPage from "./pages/SettingsPage";
+import InstallPage from "./pages/InstallPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <div className="min-h-screen bg-background">
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/quick-tools" element={<QuickTools />} />
-            <Route path="/currency" element={<CurrencyConverter />} />
-            <Route path="/units" element={<UnitConverter />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/settings" element={<SettingsPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <BottomNav />
-        </div>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="min-h-screen bg-background">
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/quick-tools" element={<QuickTools />} />
+              <Route path="/currency" element={<CurrencyConverter />} />
+              <Route path="/units" element={<UnitConverter />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/settings" element={<SettingsPage />} />
+              <Route path="/install" element={<InstallPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <BottomNav />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
 
 export default App;
